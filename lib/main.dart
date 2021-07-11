@@ -16,28 +16,31 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   var _questionIndex = 0;
 
+  final question = const [
+    {
+      'questionText': 'What is your favorite color?',
+      'answer': ['Black', 'Red', 'Green', 'White'],
+    },
+    {
+      'questionText': 'What\'s your favorite animal?',
+      'answer': ['Rabbit', 'Snake', 'Elephant', 'Lion'],
+    },
+    {
+      'questionText': 'Who\'s your favorite instructor?',
+      'answer': ['Max', 'Ram', 'Hari', 'Shyam'],
+    },
+  ];
+
   void _answerQuestion() {
     setState(() {
       _questionIndex = _questionIndex + 1;
     });
+
+    if (_questionIndex < question.length) {}
   }
 
   @override
   Widget build(BuildContext context) {
-    var question = [
-      {
-        'questionText': 'What is your favorite color?',
-        'answer': ['Black', 'Red', 'Green', 'White'],
-      },
-      {
-        'questionText': 'What\'s your favorite animal?',
-        'answer': ['Rabbit', 'Snake', 'Elephant', 'Lion'],
-      },
-      {
-        'questionText': 'Who\'s your favorite instructor?',
-        'answer': ['Max', 'Ram', 'Hari', 'Shyam'],
-      },
-    ];
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
@@ -45,16 +48,20 @@ class _MyAppState extends State<MyApp> {
             "My First App",
           ),
         ),
-        body: Column(
-          children: [
-            Question(question[_questionIndex]['questionText'] as String),
-            ...(question[_questionIndex]['answer'] as List<String>)
-                .map((answer) {
-              return Answer(_answerQuestion, answer);
-            }).toList()
-          ],
-        ),
+        body: _questionIndex < question.length
+            ? Column(
+                children: [
+                  Question(question[_questionIndex]['questionText'] as String),
+                  ...(question[_questionIndex]['answer'] as List<String>)
+                      .map((answer) {
+                    return Answer(_answerQuestion, answer);
+                  }).toList()
+                ],
+              )
+            : Center(
+                child: Text('You did it!'),
+              ),
       ),
     );
- 0 }
+  }
 }
